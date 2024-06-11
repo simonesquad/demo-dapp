@@ -1,7 +1,10 @@
 require("@nomicfoundation/hardhat-ignition-ethers");
 require("@nomicfoundation/hardhat-toolbox");
 require("@chainlink/hardhat-chainlink");
+
 require('dotenv').config();
+const { ALCHEMY_API_KEY, METAMASK_PRIVATE_KEY } = process.env;
+
 
 module.exports = {
   defaultNetwork: "sepolia",
@@ -9,8 +12,8 @@ module.exports = {
     hardhat: {
     },
     sepolia: {
-      url: 'https://eth-sepolia.g.alchemy.com/v2/-Jm83I6efKyL1Ux2NrxlFuoGFPmcXer7',
-      accounts: []
+      url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      accounts: [METAMASK_PRIVATE_KEY],
     }
   },
   solidity: {
