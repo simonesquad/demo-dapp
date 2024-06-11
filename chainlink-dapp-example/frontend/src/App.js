@@ -1,12 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ethers } from "ethers";
+
 
 function App() {
 
   const [storedPrice, setStoredPrice] = useState('');
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
-  const contractAddress = '<REPLACE_WITH_DEPLOYED_CONTRACT_ADDRESS>';
+
+  let signer = null;
+  let provider;
+  if (window.ethereum == null) {
+    console.log("MetaMask not installed; using read-only defaults")
+    provider = ethers.getDefaultProvider()
+  } else {
+    provider = new ethers.BrowserProvider(window.ethereum)
+    signer = provider.getSigner();
+  }
+
+  // const provider = new ethers.providers.Web3Provider(window.ethereum)
+  // const signer = provider.getSigner()
+
+
+  const contractAddress = '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e';
   const ABI = 
     '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"getLatestPrice","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"storeLatestPrice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"storedPrice","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function"}]'
   const contract = new ethers.Contract(contractAddress, ABI, signer);
